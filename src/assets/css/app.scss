@@ -1,0 +1,206 @@
+$primary: #BF6BBB;
+$secondary: #7B8D95;
+$info: #2791B5;
+$text-muted: #6C757D;
+$menu: #53545C;
+$success: #8EB26F;
+$danger: #FD003A;
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+@import '~bootstrap/scss/bootstrap';
+
+html,
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.5;
+  overflow-x: hidden !important;
+}
+.margin-zero p{
+  margin: 0!important;
+  margin-bottom: 1px!important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.text-menu {
+  color: $menu !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.quill .ql-container.ql-snow {
+  height: 400px !important;
+}
+
+.support .quill .ql-container.ql-snow {
+  height: 50px !important;
+}
+
+.bg-img {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.vh-100 {
+  height: 100dvh !important;
+}
+
+.input-bg {
+  background-color: #EFF1F999;
+}
+
+.border-dash {
+  border-style: dashed !important;
+}
+
+.card {
+  position: inherit !important;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+// font size
+
+.s-10 {
+  font-size: 0.625rem;
+}
+
+.s-12 {
+  font-size: 0.75rem;
+}
+
+.s-14 {
+  font-size: 0.875rem;
+}
+
+.s-15 {
+  font-size: 0.938rem;
+}
+
+.s-16 {
+  font-size: 1rem;
+}
+
+.s-17 {
+  font-size: 1.063rem;
+}
+
+.s-18 {
+  font-size: 1.125rem;
+}
+
+.s-20 {
+  font-size: 1.25rem;
+}
+
+.s-22 {
+  font-size: 1.375rem;
+}
+
+.s-24 {
+  font-size: 1.5rem;
+}
+
+.s-26 {
+  font-size: 1.625rem;
+}
+
+.s-28 {
+  font-size: 1.75rem;
+}
+
+.s-30 {
+  font-size: 1.875rem;
+}
+
+.s-80 {
+  font-size: 5rem;
+}
+
+.s-50 {
+  font-size: 3.125rem;
+}
+
+.s-38 {
+  font-size: 2.375rem;
+}
+
+.s-40 {
+  font-size: 2.5rem;
+}
+
+.s-70 {
+  font-size: 4.375rem;
+}
+
+.s-60 {
+  font-size: 3.75rem;
+}
+
+// font weight
+.fw-200 {
+  font-weight: 200;
+}
+
+.fw-300 {
+  font-weight: 300;
+}
+
+.fw-400 {
+  font-weight: 400;
+}
+
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.fw-800 {
+  font-weight: 800;
+}
+
+.img-contain {
+  object-fit: contain;
+}
+
+.img-cover {
+  object-fit: cover;
+}
+
+// custom style for table-component
+// .rdt_TableCell div:first-child{
+//   overflow: inherit!important;
+// }
