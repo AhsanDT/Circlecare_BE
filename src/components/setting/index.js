@@ -117,7 +117,7 @@ const SettingPage = () => {
                                 {...register('email', { required: true })}
                             />
                         </Col>
-                        <Col md={6}>
+                        {/*<Col md={6}>
                             <Form.Label className="text-secondary fw-400 s-14 mb-1">
                                 {lang === 'en' ? 'Password' : 'كلمة المرور'}:
                             </Form.Label>
@@ -126,8 +126,8 @@ const SettingPage = () => {
                                 className="shadow-none s-15 text-dark fw-400 border-2"
                                 {...register('password', { required: false })}
                             />
-                        </Col>
-                        <Col md="auto">
+                        </Col>*/}
+                        <Col md="auto" className="mt-auto mb-1">
                             <Button variant="primary" type="submit" disabled={isAdding} className="shadow-none s-14 text-white w-100">
                                 Save Changes
                             </Button>

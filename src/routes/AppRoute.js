@@ -28,20 +28,22 @@ import EditArticlePage from "../components/article/EditDetailyTaskPage";
 import EditDetailyTaskPage from '../components/dailyTask/EditDetailyTaskPage';
 import Support from "../components/support";
 import Privacy from "../pages/Privacy";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 const AppRoute = () => {
     const navigate = useNavigate()
     const token = useSelector(state => state?.auth?.token);
 
     const checkToken = () => {
-        return token !== null && token !== undefined && token !== '';
+        return token !== null || token !== undefined || token !== ''
     }
     return (
         <>
             <Routes>
 
-                <Route path="/auth" element={<AuthLayout />}>
-                    <Route index element={<Navigate to={{ pathname: "/auth/login" }} />} />
+                <Route path="/auth" element={<PublicRoute component={AuthLayout} />}>
+                    {/*<Route index element={<Navigate to={{ pathname: "/auth/login" }} />} />*/}
                     <Route path="login" element={<Login />} />
                     <Route path="recover" element={<Recover />} />
                     <Route path="verify" element={<Verify />} />
@@ -50,8 +52,8 @@ const AppRoute = () => {
                 </Route>
                 <Route path="/privacy" element={<Privacy />} />
 
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<>{checkToken() ? <Home /> : <Navigate to={{ pathname: "/auth/login" }} />}</>} />
+                <Route path="/" element={<PrivateRoute component={Layout} />}>
+                    <Route index element={<Home />} />
 
                     <Route path="sub-admin" element={<SubAdmin />} />
 
@@ -60,7 +62,7 @@ const AppRoute = () => {
                         <Route path=":id" element={<UserListDetail />} />
                     </Route>
 
-                    <Route path="questionnaire" element={<Outlet />} >
+                    <Route path="questionnaire" element={<Outlet />}>
                         <Route index element={<Questionnaire />} />
                         <Route path="add-new" element={<AddQuestionnaire />} />
                         <Route path="edit/:id" element={<EditQuestionnairePage />} />

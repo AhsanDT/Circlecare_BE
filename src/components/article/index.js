@@ -14,19 +14,19 @@ const ArticlePage = () => {
     const [show, setShow] = useState(false);
     const [filterText, setFilterText] = React.useState('')
 
-    const { data, refetch, isFetching, isLoading } = useGetArticleQuery()
+    const { data, isLoading, refetch } = useGetArticleQuery()
 
     const [removeRequest] = useDeleteArticleMutation()
 
     const handleRemove = (id) => {
-        refetch()
         if (window.confirm('Are you sure you want to delete this item?')) {
             removeRequest(id)
                 .unwrap()
                 .then((res) => {
                     if (res?.success) {
-                        toast.success(res?.data, { id: 'remove-success', duration: 4000 })
                         refetch()
+                        toast.success(res?.data, { id: 'remove-success', duration: 4000 })
+
                     }
                 })
                 .catch((err) => {
@@ -95,7 +95,7 @@ const ArticlePage = () => {
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-            with: 220,
+            with: '220px',
         },
     ]
 
@@ -107,7 +107,9 @@ const ArticlePage = () => {
     const filteredItems = useMemo(() => data?.data?.filter((item) => item.title && item.title.toLowerCase().includes(filterText.toLowerCase())), [data, filterText])
 
     // if (isError) return <div>An error has occurred!</div>
-    if (isLoading) return <div className="text-center">Loading...</div>
+    if (isLoading){
+        <div className="text-center">Loading...</div>
+    }
 
 
 
@@ -118,7 +120,7 @@ const ArticlePage = () => {
                     <Row className="align-items-center justify-content-end mb-3">
                         <Col xs="auto">
                             <Button variant="primary" className="shadow-none s-14 text-white" onClick={() => refetch()}>
-                                {isFetching ? '...' : 'Refresh'}
+                                {isLoading ? '...' : 'Refresh'}
                             </Button>
                         </Col>
                         <Col lg={3}>

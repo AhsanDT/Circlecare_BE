@@ -3,7 +3,8 @@ import { api } from "../services/api";
 
 const initialState = {
     user: null,
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+    token: null,
+    isAuth: false,
     lang: 'en',
 }
 
@@ -17,6 +18,7 @@ export const authSlice = createSlice({
         removeAuth: (state) => {
             state.token = null
             state.user = null
+            state.isAuth = false
         }
     },
     extraReducers: (builder) => {
@@ -25,6 +27,7 @@ export const authSlice = createSlice({
                 api.endpoints.login.matchFulfilled, (state, { payload }) => {
                     // payload?.access_token
                     state.token = payload?.access_token
+                    state.isAuth = true
                 }
             )
             .addMatcher(

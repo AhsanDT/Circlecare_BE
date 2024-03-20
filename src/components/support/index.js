@@ -31,6 +31,7 @@ const Support = () => {
     const [sendMessageRequest, result2] = useSendMessageMutation()
     const [sendFileRequest] = useSendFileMutation()
     const [filterText, setFilterText] = useState('')
+    const [tab, setTab] = useState(false)
 
     const {
         register,
@@ -172,13 +173,13 @@ const Support = () => {
             <div className="row g-0">
                 <div className="col-4 border-end bg-white pt-3" style={{ borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }}>
                     <div className="row g-0">
-                        <div className="col-6 border-bottom border-primary border-3">
-                            <p className="mb-0 fw-400 text-dark text-center pb-2 s-16">
+                        <div className={`col-6 ${tab ? '' : 'border-bottom border-primary border-3'}`}>
+                            <p className="mb-0 fw-400 text-dark text-center pb-2 s-16" role="button" onClick={() => setTab(false)}>
                                 Messages
                             </p>
                         </div>
-                        <div className="col-6 ">
-                            <p className="mb-0 fw-400 text-muted text-center pb-2 s-16">
+                        <div className={`col-6 ${tab ? 'border-bottom border-primary border-3' : ''}`}>
+                            <p className="mb-0 fw-400 text-muted text-center pb-2 s-16" role="button" onClick={() => setTab(true)}>
                                 Flagged
                             </p>
                         </div>
@@ -190,7 +191,7 @@ const Support = () => {
                             </InputGroup.Text>
                             <Form.Control
                                 type="search"
-                                placeholder="Search"
+                                placeholder={`${lang === 'en' ? 'Search' : 'يبحث'}`}
                                 className="bg-transparent shadow-none s-14"
                                 value={filterText}
                                 onChange={(e) => setFilterText(e.target.value)}

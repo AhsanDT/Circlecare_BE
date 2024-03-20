@@ -27,6 +27,8 @@ import {
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import {useSelector} from "react-redux";
+import ReactQuill from "react-quill";
+
 
 const EditArticlePage = () => {
     const lang = useSelector(state => state?.auth?.lang);
@@ -37,6 +39,8 @@ const EditArticlePage = () => {
     const [optionValue, setOptionValue] = useState('')
     const [option, setOption] = useState([])
     const [filterText, setFilterText] = React.useState('')
+    const [type, setType] = useState(null)
+
 
     const {
         register,
@@ -60,6 +64,7 @@ const EditArticlePage = () => {
         addMedia(form)
             .unwrap()
             .then((res) => {
+                setType(event?.target?.files[0]?.type)
                 setValue('media_url', res?.data)
             })
     }
@@ -95,14 +100,14 @@ const EditArticlePage = () => {
         setValue('media_url', data?.data[0]?.media_url)
         setValue('video_url', data?.data[0]?.video_url)
 
-            setValue(`health_survey_score.min`, data?.data[0]?.health_survey_score.min)
-        setValue(`health_survey_score.max`, data?.data[0]?.health_survey_score.max)
+            setValue(`health_survey_score.min`, data?.data[0]?.health_survey_score?.min)
+        setValue(`health_survey_score.max`, data?.data[0]?.health_survey_score?.max)
 
-        setValue(`q_les_qsf_score.min`, data?.data[0]?.q_les_qsf_score.min)
-        setValue(`q_les_qsf_score.max`, data?.data[0]?.q_les_qsf_score.max)
+        setValue(`q_les_qsf_score.min`, data?.data[0]?.q_les_qsf_score?.min)
+        setValue(`q_les_qsf_score.max`, data?.data[0]?.q_les_qsf_score?.max)
 
-            setValue(`qid_sr_score.min`, data?.data[0]?.qid_sr_score.min)
-            setValue(`qid_sr_score.max`, data?.data[0]?.qid_sr_score.max)
+            setValue(`qid_sr_score.min`, data?.data[0]?.qid_sr_score?.min)
+            setValue(`qid_sr_score.max`, data?.data[0]?.qid_sr_score?.max)
 
         setValue('cancer_type', data?.data[0]?.cancer_type)
         setValue('tumor_stage', data?.data[0]?.tumor_stage)
@@ -158,7 +163,7 @@ const EditArticlePage = () => {
                         </Col>
                         <Col md={6}>
                             {/*<Form.Label className="text-secondary fw-400 s-14 mb-1">Task Type</Form.Label>*/}
-                            <Row>
+                            {/*<Row>
                                 <Col xs="auto">
                                     <Form.Check
                                         type={'radio'}
@@ -189,7 +194,7 @@ const EditArticlePage = () => {
                                         isValid={errors.month}
                                     />
                                 </Col>
-                            </Row>
+                            </Row>*/}
 
                         </Col>
 
@@ -222,7 +227,7 @@ const EditArticlePage = () => {
                                 isValid={errors.time}
                             />
                         </Col>
-                        <h5>Healthy Survey</h5>
+                       {/* <h5>Healthy Survey</h5>
                         <Col md={4}>
                             <Form.Label className="text-secondary fw-400 s-14 mb-1">
                                 Heath Survey Score:
@@ -415,7 +420,7 @@ const EditArticlePage = () => {
                                 <option value="Impact on quality of life">Impact on quality of life</option>
                                 <option value="Psychosocial impact">Psychosocial impact</option>
                             </Form.Select>
-                        </Col>
+                        </Col>*/}
 
                         <Col md={12}>
                             <Row className="align-items-center">
@@ -428,35 +433,50 @@ const EditArticlePage = () => {
                                                     <p className="small text-secondary mb-0">Upload Image</p>
                                                 </div>
                                             </label>
-                                            <input type="file" id='image' className="d-none" onChange={hamdleAddMedia} />
+                                            <input
+                                                type="file"
+                                                id='image'
+                                                className="d-none"
+                                                accept="image/*"
+                                                onChange={hamdleAddMedia}
+                                            />
                                         </Col>
-                                        {watch('media_url') && (
-                                            <Col xs={2}>
+                                        {watch('media_url')  && (
+                                            <Col xs={3} className="d-flex align-items-end">
                                                 <div className={`${!watch('media_url') ? 'border border-danger border-2' : 'border border-primary border-dash'} rounded-3 row g-0 align-items-center justify-content-center overflow-hidden`} style={{ height: 100 }}>
                                                     <img src={process.env.REACT_APP_BASE_URL + watch('media_url')} alt='media' className='w-100 h-100' style={{ objectFit: 'cover' }} />
                                                 </div>
+
+                                                <i className="fa fa-trash s-18 text-danger ms-2" role="button" onClick={() => setValue('media_url', null)}></i>
                                             </Col>
                                         )}
                                     </>
                                 ) : (
                                     <>
                                         <Col xs={2}>
-                                            <label htmlFor='image' role="button" className={`${!watch('media_url') ? 'border border-danger border-2' : 'border border-primary border-dash'} rounded-3 row g-0 align-items-center justify-content-center overflow-hidden`} style={{ height: 100 }}>
+                                            <label htmlFor='video' role="button" className={`${!watch('media_url') ? 'border border-danger border-2' : 'border border-primary border-dash'} rounded-3 row g-0 align-items-center justify-content-center overflow-hidden`} style={{ height: 100 }}>
                                                 <div className="col-auto text-center">
                                                     <i className="fa-light fa-image text-primary s-38 d-block" />
                                                     <p className="small text-secondary mb-0">Upload Video</p>
                                                 </div>
                                             </label>
-                                            <input type="file" id='image' className="d-none" onChange={hamdleAddMedia} />
+                                            <input
+                                                type="file"
+                                                id='video'
+                                                className="d-none"
+                                                accept="video/*"
+                                                onChange={hamdleAddMedia}
+                                            />
                                         </Col>
                                         {watch('media_url') && (
-                                            <Col xs={2}>
+                                            <Col xs={2} className="d-flex align-items-end">
                                                 <div htmlFor='image' role="button" className="border border-primary border-dash rounded-3 row g-0 align-items-center justify-content-center overflow-hidden">
                                                     <video width="100" height="100" controls>
                                                         <source src={process.env.REACT_APP_BASE_URL + watch('media_url')} type="video/mp4" />
                                                         Error Message
                                                     </video>
                                                 </div>
+                                                <i className="fa fa-trash s-18 text-danger ms-2" role="button" onClick={() => setValue('media_url', null)}></i>
                                             </Col>
                                         )}
                                     </>
@@ -474,6 +494,13 @@ const EditArticlePage = () => {
                                 {...register('description', { required: true })}
                                 isValid={errors.description}
                             />
+                            {/*<div className={`${errors.description ? 'border border-2 border-danger' : ''}`} style={{height: 200, overflowY: 'auto'}}>*/}
+                            {/*    <ReactQuill*/}
+                            {/*        theme="snow"*/}
+                            {/*        value={watch('description')}*/}
+                            {/*        onChange={(e) => setValue('description', e)}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
                         </Col>
                     </Form>
                 </Card.Body>

@@ -26,8 +26,9 @@ const Questionnaire = () => {
                 .unwrap()
                 .then((res) => {
                     if (res?.success) {
-                        toast.success(res?.data, { id: 'remove-success', duration: 4000 })
                         refetch()
+                        toast.success(res?.data, { id: 'remove-success', duration: 4000 })
+
                     }
                 })
                 .catch((err) => {
@@ -113,7 +114,7 @@ const Questionnaire = () => {
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-            with: 220,
+            with: '220px',
         },
     ]
 

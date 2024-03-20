@@ -3,7 +3,7 @@ import { Button, Card, Col, Form, InputGroup, Row, NavDropdown, Modal, FloatingL
 import DataTable from 'react-data-table-component'
 import { customStyles } from "../../assets/js/customTable";
 import useRemove from "../../global/hooks/useRemove";
-import { useFieldArray, useForm } from "react-hook-form";
+import {Controller, useFieldArray, useForm} from "react-hook-form";
 
 import {
     useUpdateQuestionareMutation,
@@ -119,18 +119,30 @@ const AddQuestionnairePage = () => {
             })
     }
 
-
-    useEffect(() => {
-        if (watch(`questions[0].type`) === 'Dropdown') {
-            const current = watch(`questions[0].options`) === undefined ? [] : getValues(`questions[0].options`)
-            setValue(`questions[0].options`, [])
-            const current2 = watch(`questions[0].options[0].sub_options`) === undefined ? [] : getValues(`questions[0].options[0].sub_options`)
-            setValue(`questions[0].options[0].sub_options`, [])
+    const handleChangeDropdown = (event, i) => {
+        setValue(`questions[${i}].type`, event.target.value)
+        if (event.target.value == 'Dropdown'){
+            // const current = watch(`questions[${i}].options`) === undefined ? [] : getValues(`questions[${i}].options`)
+            // setValue(`questions[${i}].options`, [])
+            // const current2 = watch(`questions[${i}].options[0].sub_options`) === undefined ? [] : getValues(`questions[${i}].options[0].sub_options`)
+            // setValue(`questions[${i}].options[0].sub_options`, [])
         } else {
-            const current = watch(`questions[0].options`) === undefined ? [] : getValues(`questions[0].options`)
-            setValue(`questions[0].options`, [])
+            // const current = watch(`questions[${i}].options`) === undefined ? [] : getValues(`questions[${i}].options`)
+            // setValue(`questions[${i}].options`, [])
         }
-    }, [watch(`questions[0].type`)])
+    }
+
+    // useEffect(() => {
+    //     if (watch(`questions[0].type`) === 'Dropdown') {
+    //         const current = watch(`questions[0].options`) === undefined ? [] : getValues(`questions[0].options`)
+    //         setValue(`questions[0].options`, [])
+    //         const current2 = watch(`questions[0].options[0].sub_options`) === undefined ? [] : getValues(`questions[0].options[0].sub_options`)
+    //         setValue(`questions[0].options[0].sub_options`, [])
+    //     } else {
+    //         const current = watch(`questions[0].options`) === undefined ? [] : getValues(`questions[0].options`)
+    //         setValue(`questions[0].options`, [])
+    //     }
+    // }, [watch(`questions[0].type`)])
 
     useEffect(() => {
         if (id) {
@@ -303,6 +315,7 @@ const AddQuestionnairePage = () => {
                                                     </>
                                                 ) : (
                                                     <>
+                                                        {console.log('watch(`questions[${i}].options`)==', watch(`questions[${i}].options`))}
                                                         {watch(`questions[${i}].options`)?.map((item, k) => (
                                                             <Row key={k} className="gx-2 p-2 py-3 align-items-center">
                                                                 <Col xs="auto">
@@ -371,21 +384,31 @@ const AddQuestionnairePage = () => {
                                                     {lang === 'en' ? 'Select Type of Answer' : 'اختر الإجابة'}
                                                 </Form.Label>
                                                 {console.log('swe', watch(`questions[${i}].options`))}
-                                                <Form.Select
-                                                    className="shadow-none s-15 text-dark fw-400 border-2"
-                                                    {...register(`questions[${i}].type`, { required: true })}
+                                                <Controller
+                                                    name={`questions[${i}].type`}
+                                                    control={control}
+                                                    rules={{
+                                                        required: true,
+                                                    }}
+                                                    render={({ field }) => (
+                                                        <Form.Select
+                                                            {...field}
+                                                            className="shadow-none s-15 text-dark fw-400 border-2"
+                                                            onChange={(e) => handleChangeDropdown(e,i)}
+                                                        >
+                                                            <option value="Multiple Choice">
+                                                                {lang === 'en' ? 'Multiple Choice' : 'متعدد الخيارات'}
+                                                            </option>
+                                                            <option value="Checkboxes">
+                                                                {lang === 'en' ? 'Checkboxes' : 'خانات الاختيار'}
+                                                            </option>
+                                                            <option value="Dropdown">
+                                                                {lang === 'en' ? 'Dropdown' : 'اسقاط'}
+                                                            </option>
+                                                        </Form.Select>
+                                                    )}
+                                                />
 
-                                                >
-                                                    <option value="Multiple Choice">
-                                                        {lang === 'en' ? 'Multiple Choice' : 'متعدد الخيارات'}
-                                                    </option>
-                                                    <option value="Checkboxes">
-                                                        {lang === 'en' ? 'Checkboxes' : 'خانات الاختيار'}
-                                                    </option>
-                                                    <option value="Dropdown">
-                                                        {lang === 'en' ? 'Dropdown' : 'اسقاط'}
-                                                    </option>
-                                                </Form.Select>
                                             </Col>
                                         </Row>
                                         <hr className="border-1" />

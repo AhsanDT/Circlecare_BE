@@ -32,7 +32,7 @@ const UserListDetailPage = () => {
                         <Col lg={12}>
                             <h5 className="fw-500 s-14 mb-4 py-2 border-bottom">
                                 <i className="fa-light fa-user s-18 me-2 text-primary"></i>
-                                User Profile
+                                User Profile 
                             </h5>
                         </Col>
                         <Col lg={12}>

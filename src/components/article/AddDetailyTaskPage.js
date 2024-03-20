@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button,
     Card,
@@ -21,6 +21,8 @@ import { useAddArticleMediaMutation, useAddArticleMutation, useAddDailyTaskMutat
 import toast from "react-hot-toast";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import ReactQuill from "react-quill";
+
 
 
 const AddArticlePage = () => {
@@ -32,6 +34,7 @@ const AddArticlePage = () => {
     const [optionValue, setOptionValue] = useState('')
     const [option, setOption] = useState([])
     const [filterText, setFilterText] = React.useState('')
+    const [type, setType] = useState(null)
 
     const {
         register,
@@ -50,11 +53,15 @@ const AddArticlePage = () => {
     const hamdleAddMedia = (event) => {
         const form = new FormData()
         form.append('file', event.target.files[0])
+        console.log('file', event.target.files[0])
 
         addMedia(form)
             .unwrap()
             .then((res) => {
-                setValue('media_url', res?.data)
+                if(res){
+                    setType(event?.target?.files[0]?.type)
+                    setValue('media_url', res?.data)
+                }
             })
     }
 
@@ -78,6 +85,10 @@ const AddArticlePage = () => {
                 toast.error(error.data.error, { id: 'add-daily-task-error', duration: 4000 })
             })
     }
+
+    useEffect(() => {
+        setValue('article_type', 'Article')
+    }, []);
 
 
 
@@ -110,6 +121,7 @@ const AddArticlePage = () => {
                                         defaultChecked={true}
                                         {...register('article_type', { required: true })}
                                         isInvalid={errors.article_type}
+                                        id="article1"
                                     />
                                 </Col>
                                 <Col xs="auto">
@@ -120,6 +132,7 @@ const AddArticlePage = () => {
                                         value={'Video'}
                                         {...register('article_type', { required: true })}
                                         isInvalid={errors.article_type}
+                                        id="video1"
                                     />
                                 </Col>
                             </Row>
@@ -127,7 +140,7 @@ const AddArticlePage = () => {
                         </Col>
                         <Col md={6}>
                             {/*<Form.Label className="text-secondary fw-400 s-14 mb-1">Task Type</Form.Label>*/}
-                            <Row>
+                            {/*<Row>
                                 <Col xs="auto">
                                     <Form.Check
                                         type={'radio'}
@@ -158,7 +171,7 @@ const AddArticlePage = () => {
                                         isInvalid={errors.month}
                                     />
                                 </Col>
-                            </Row>
+                            </Row>*/}
 
                         </Col>
 
@@ -195,7 +208,7 @@ const AddArticlePage = () => {
                                 isInvalid={errors.time}
                             />
                         </Col>
-                        <h5>
+                        {/*<h5>
                             {lang === 'en' ? 'Healthy Survey' : 'المسح الصحي'}
                         </h5>
                         <Col md={4}>
@@ -392,7 +405,7 @@ const AddArticlePage = () => {
                                 <option value="Impact on quality of life">Impact on quality of life</option>
                                 <option value="Psychosocial impact">Psychosocial impact</option>
                             </Form.Select>
-                        </Col>
+                        </Col>*/}
 
                         <Col md={12}>
                             <Row className="align-items-center">
@@ -405,35 +418,51 @@ const AddArticlePage = () => {
                                                     <p className="small text-secondary mb-0">Upload Image</p>
                                                 </div>
                                             </label>
-                                            <input type="file" id='image' className="d-none" onChange={hamdleAddMedia} />
+                                            <input
+                                                type="file"
+                                                id='image'
+                                                className="d-none"
+                                                accept="image/*"
+                                                onChange={hamdleAddMedia}
+                                            />
                                         </Col>
-                                        {watch('media_url') && (
-                                            <Col xs={2}>
-                                                <div className={`${!watch('media_url') ? 'border border-danger border-2' : 'border border-primary border-dash'} rounded-3 row g-0 align-items-center justify-content-center overflow-hidden`} style={{ height: 100 }}>
+                                        {watch('media_url') && type?.startsWith('image/') && (
+                                            <>
+                                            <Col xs={3} className="d-flex align-items-end">
+                                                <div className={`${!watch('media_url') ? 'border border-danger border-2' : 'border border-primary border-dash'} rounded-3 row g-0 align-items-center justify-content-center overflow-hidden`} style={{ height: 100, width: 120 }}>
                                                     <img src={process.env.REACT_APP_BASE_URL + watch('media_url')} alt='media' className='w-100 h-100' style={{ objectFit: 'cover' }} />
                                                 </div>
+                                                <i className="fa fa-trash s-18 text-danger ms-2" role="button" onClick={() => setValue('media_url', null)}></i>
                                             </Col>
+                                            </>
                                         )}
                                     </>
                                 ) : (
                                     <>
                                         <Col xs={2}>
-                                            <label htmlFor='image' role="button" className={`${!watch('media_url') ? 'border border-danger border-2' : 'border border-primary border-dash'} rounded-3 row g-0 align-items-center justify-content-center overflow-hidden`} style={{ height: 100 }}>
+                                            <label htmlFor='video' role="button" className={`${!watch('media_url') ? 'border border-danger border-2' : 'border border-primary border-dash'} rounded-3 row g-0 align-items-center justify-content-center overflow-hidden`} style={{ height: 100 }}>
                                                 <div className="col-auto text-center">
                                                     <i className="fa-light fa-image text-primary s-38 d-block" />
                                                     <p className="small text-secondary mb-0">Upload Video</p>
                                                 </div>
                                             </label>
-                                            <input type="file" id='image' className="d-none" onChange={hamdleAddMedia} />
+                                            <input
+                                                type="file"
+                                                id='video'
+                                                className="d-none"
+                                                accept="video/*"
+                                                onChange={hamdleAddMedia}
+                                            />
                                         </Col>
-                                        {watch('media_url') && (
-                                            <Col xs={2}>
-                                                <div htmlFor='image' role="button" className="border border-primary border-dash rounded-3 row g-0 align-items-center justify-content-center overflow-hidden">
+                                        {watch('media_url') && type?.startsWith('video/') && (
+                                            <Col xs={3} className="d-flex align-items-end">
+                                                <div role="button" className="border border-primary border-dash rounded-3 row g-0 align-items-center justify-content-center overflow-hidden">
                                                     <video width="100" height="100" controls>
                                                         <source src={process.env.REACT_APP_BASE_URL + watch('media_url')} type="video/mp4" />
                                                         Error Message
                                                     </video>
                                                 </div>
+                                                <i className="fa fa-trash s-18 text-danger ms-2" role="button" onClick={() => setValue('media_url', null)}></i>
                                             </Col>
                                         )}
                                     </>
@@ -451,6 +480,13 @@ const AddArticlePage = () => {
                                 {...register('description', { required: true })}
                                 isInvalid={errors.description}
                             />
+                            {/*<div className={`${errors.description ? 'border border-2 border-danger' : ''}`} style={{height: 200, overflowY: 'auto'}}>*/}
+                            {/*    <ReactQuill*/}
+                            {/*        theme="snow"*/}
+                            {/*        value={watch('description')}*/}
+                            {/*        onChange={(e) => setValue('description', e)}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
                         </Col>
                     </Form>
                 </Card.Body>

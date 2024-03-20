@@ -13,7 +13,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['chat'],
+    blacklist: ['chat', 'api'],
 };
 
 const rootReducer = combineReducers({
